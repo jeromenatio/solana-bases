@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Exit if any command fails
+set -e
+
+# Update and install necessary packages
+sudo apt update && sudo apt install -y curl build-essential libssl-dev pkg-config jq
+
+# Install Rust and Cargo using Rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Activate Rust environment without restarting the session
+source $HOME/.cargo/env
+
+# Fetch the latest stable release of Solana using GitHub API
+LATEST_RELEASE=$(curl -s https://api.github.com/repos/solana-labs/solana/releases/latest | jq -r .tag_name)
+
+# Install Solana using the fetched version
+sh -c "$(curl -sSfL https://release.solana.com/$LATEST_RELEASE/install)"
+
+# Update PATH in .bashrc if not already added
+if ! grep -q 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' $HOME/.bashrc; then
+  echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $HOME/.bashrc
+fi
+
+# Reload .bashrc to update the path
+source $HOME/.bashrc
+
+# Set Solana to use the Mainnet
+solana config set --url https://api.mainnet-beta.solana.com
+
+# Generate a new keypair for the account
+solana-keygen new --no-bip39-passphrase
+
+# Verify installations and configuration
+echo "Rust version:"
+rustc --version
+
+echo "Cargo version:"
+cargo --version
+
+echo "Solana version:"
+solana --version
+
+echo "Current Solana Configuration:"
+solana config get
+
+echo "Setup complete! You can now run Solana commands, and a new account has been created."

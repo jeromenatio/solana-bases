@@ -36,9 +36,10 @@ fi
 
 # List of file names to download
 declare -a files=(
-    "tn-disk"
     "tn-user"
+    "tn-disk"
     "tn-perf"
+    "tn-solana"
 )
 
 # Ensure the binary directory exists
