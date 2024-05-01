@@ -38,6 +38,7 @@ fi
 declare -a files=(
     "tn-disk"
     "tn-user"
+    "tn-perf"
 )
 
 # Ensure the binary directory exists

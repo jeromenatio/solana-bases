@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# Function to set or update configuration parameters in system files
+update_config() {
+    local key="$1"
+    local value="$2"
+    local file="$3"
+
+    # Determine the pattern and formatting based on the file
+    local pattern
+    if [[ "$file" == "/etc/sysctl.conf" ]]; then
+        pattern="^${key}="
+        key="${key}=${value}"
+    elif [[ "$file" == "/etc/security/limits.conf" ]]; then
+        local domain=$(echo "$key" | awk '{print $1}')
+        local item=$(echo "$key" | awk '{print $3}')
+        pattern="^\s*${domain}\s+\S+\s+${item}\s"
+        key="${key} ${value}"
+    fi
+
+    # Check if the line already exists
+    if grep -qE "$pattern" "$file"; then
+        # Line exists, replace it
+        sudo sed -i "s@$pattern.*@$key@" "$file"
+    else
+        # Line does not exist, append it
+        echo "$key" | sudo tee -a "$file" > /dev/null
+    fi
+}
+
+# Function to ensure PAM modules handle limits correctly
+ensure_pam_module() {
+    local file="$1"
+    local module="session required pam_limits.so"
+
+    if ! grep -q "$module" "$file"; then
+        echo "$module" | sudo tee -a "$file" > /dev/null
+    fi
+}
+
+# Sysctl settings
+update_config "vm.swappiness" "1" "/etc/sysctl.conf"
+update_config "vm.dirty_ratio" "70" "/etc/sysctl.conf"
+update_config "vm.dirty_background_ratio" "30" "/etc/sysctl.conf"
+update_config "vm.vfs_cache_pressure" "20" "/etc/sysctl.conf"
+update_config "vm.max_map_count" "1000000" "/etc/sysctl.conf"
+update_config "net.core.somaxconn" "10000" "/etc/sysctl.conf"
+update_config "net.core.netdev_max_backlog" "10000" "/etc/sysctl.conf"
+update_config "net.core.rmem_default" "31457280" "/etc/sysctl.conf"
+update_config "net.core.wmem_default" "31457280" "/etc/sysctl.conf"
+update_config "net.core.rmem_max" "31457280" "/etc/sysctl.conf"
+update_config "net.core.wmem_max" "31457280" "/etc/sysctl.conf"
+update_config "net.ipv4.tcp_rmem" "4096 12582912 31457280" "/etc/sysctl.conf"
+update_config "net.ipv4.tcp_wmem" "4096 12582912 31457280" "/etc/sysctl.conf"
+update_config "net.ipv4.tcp_max_syn_backlog" "8096" "/etc/sysctl.conf"
+update_config "net.ipv4.tcp_slow_start_after_idle" "0" "/etc/sysctl.conf"
+update_config "net.ipv4.tcp_tw_reuse" "1" "/etc/sysctl.conf"
+
+# Security limits settings
+update_config "* soft nofile" "100000" "/etc/security/limits.conf"
+update_config "* hard nofile" "100000" "/etc/security/limits.conf"
+update_config "* soft nproc" "20000" "/etc/security/limits.conf"
+update_config "* hard nproc" "20000" "/etc/security/limits.conf"
+
+# Update PAM configuration to apply limits
+ensure_pam_module "/etc/pam.d/common-session"
+ensure_pam_module "/etc/pam.d/common-session-noninteractive"
+
+echo "Configuration updates complete. Reloading sysctl settings now."
+sudo sysctl -p
+
+# Function to install cpupower if not already installed
+install_cpupower() {
+    if ! command -v cpupower &> /dev/null; then
+        echo "cpupower could not be found, installing..."
+        sudo apt-get update && sudo apt-get install -y linux-tools-common linux-tools-generic linux-tools-`uname -r`
+    else
+        echo "cpupower is already installed."
+    fi
+}
+
+# Function to configure cpupower
+configure_cpupower() {
+    # Set the governor to 'performance' to run CPU at max frequency
+    sudo cpupower frequency-set -g performance
+
+    # Optionally, set the specific frequency if the hardware supports it
+    # You would replace 'max_freq' with the desired frequency in KHz
+    # sudo cpupower frequency-set -f max_freq
+
+    echo "cpupower configuration has been updated."
+}
+
+# Main execution
+install_cpupower
+configure_cpupower
