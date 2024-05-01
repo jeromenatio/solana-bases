@@ -41,6 +41,9 @@ if [ ! -d "$HOME/plugins" ]; then
 fi
 cd $HOME/plugins
 
+#Delete plugins if exists
+rm $HOME/plugins/yellowstone-grpc
+
 # Clone the specific version of yellowstone-grpc
 git clone https://github.com/rpcpool/yellowstone-grpc.git
 cd yellowstone-grpc
