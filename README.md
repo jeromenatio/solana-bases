@@ -6,25 +6,30 @@ For each following steps please replace `/path/to/file/install.sh` with the path
 
 ## INSTALLATION
 
-##### Download install.sh
+##### Create install directory
 ```bash
-sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh \
--O /path/to/file/install.sh
+sudo mkdir /tn-scripts
+```
+
+##### Download tn-install.sh
+```bash
+sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh -O /tn-scripts/tn-install.sh
 ```
 
 ##### Make it executable
 ```bash
-sudo chmod +x /path/to/file/install.sh
+sudo chmod +x /tn-scripts/tn-install.sh
 ```
 
 ##### Execute and follow instructions
 ```bash
-sudo /path/tofile/install.sh
+sudo /tn-scripts/tn-install.sh
 ```
 
 ##### All in a single command
 ```bash
-sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh -O /path/to/file/install.sh \
-&& sudo chmod +x /path/to/file/install.sh \
-&& sudo /path/to/file/install.sh
+sudo mkdir /tn-scripts \
+&& sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh -O /tn-scripts/tn-install.sh \
+&& sudo chmod +x /tn-scripts/tn-install.sh \
+&& sudo /tn-scripts/tn-install.sh
 ```
