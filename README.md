@@ -8,7 +8,7 @@ For each following steps please replace `/path/to/file/install.sh` with the path
 
 ##### Download install.sh
 ```bash
-sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/scripts/tninstall.sh \
+sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh \
 -O /path/to/file/install.sh
 ```
 
