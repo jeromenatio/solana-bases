@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Base URL for downloading files
-BASE_URL="https://raw.githubusercontent.com/jeromenatio/solana-bases/main/scripts/"
+BASE_URL="http://example.com/"
 
 # Default directory where binaries will be stored
 BIN_DIR="/usr/local/bin"
@@ -34,18 +34,23 @@ else
     echo "Using directory: $BIN_DIR"
 fi
 
-# List of file names to download
+# List of file names to download (with .sh extension)
 declare -a files=(
-    "tn-disk.sh"
+    "file1.sh"
+    "file2.sh"
+    "file3.sh"
 )
 
 # Ensure the binary directory exists
 mkdir -p "$BIN_DIR"
 
 # Loop through each file name to download and configure
-for file_name in "${files[@]}"; do
+for file_name_with_ext in "${files[@]}"; do
+    # Remove the .sh extension for saving
+    file_name="${file_name_with_ext%.sh}"
+    
     # Download the file
-    wget -q -O "$BIN_DIR/$file_name" "${BASE_URL}${file_name}"
+    wget -q -O "$BIN_DIR/$file_name" "${BASE_URL}${file_name_with_ext}"
     
     # Make the file executable
     chmod +x "$BIN_DIR/$file_name"
