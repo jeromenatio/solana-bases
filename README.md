@@ -2,8 +2,8 @@
 
 Boilerplate files and scripts to install and configure a solana rpc node. \
 The script is for a `ubuntu` based linux distribution.\
-Order of installation, first as root, `tn-user`, `tn-disk`, `tn-perf` then `reboot`
-Then connect as solanauser then `tn-solana`, `tn-validator`, `tn-daemon`
+Order of installation, first as root, `tn-user`, `tn-disk`, `tn-perf` then `reboot`. \
+Then connect as solanauser then `tn-solana`, `tn-validator`, `tn-daemon`. \
 Version of solana and yellowston : `v1.17.31` and `v1.14.1+solana.1.17.31`
 
 ## INSTALLATION
