@@ -39,6 +39,7 @@ ensure_pam_module() {
 }
 
 # Sysctl settings
+update_config "fs.file-max" "2000000" "/etc/sysctl.conf"
 update_config "vm.swappiness" "1" "/etc/sysctl.conf"
 update_config "vm.dirty_ratio" "70" "/etc/sysctl.conf"
 update_config "vm.dirty_background_ratio" "30" "/etc/sysctl.conf"
@@ -57,10 +58,10 @@ update_config "net.ipv4.tcp_slow_start_after_idle" "0" "/etc/sysctl.conf"
 update_config "net.ipv4.tcp_tw_reuse" "1" "/etc/sysctl.conf"
 
 # Security limits settings
-update_config "* soft nofile" "100000" "/etc/security/limits.conf"
-update_config "* hard nofile" "100000" "/etc/security/limits.conf"
-update_config "* soft nproc" "20000" "/etc/security/limits.conf"
-update_config "* hard nproc" "20000" "/etc/security/limits.conf"
+update_config "* soft nofile" "2000000" "/etc/security/limits.conf"
+update_config "* hard nofile" "2000000" "/etc/security/limits.conf"
+update_config "* soft nproc" "30000" "/etc/security/limits.conf"
+update_config "* hard nproc" "30000" "/etc/security/limits.conf"
 
 # Update PAM configuration to apply limits
 ensure_pam_module "/etc/pam.d/common-session"
