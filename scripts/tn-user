@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Script to create a user 'solanauser' with sudo privileges via the sudo group and specific directories in the user's home
+
+# Check if the script is run as root
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+# Check if a password is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 PASSWORD"
+    exit 1
+fi
+
+# Create the group 'solanauser' if it does not already exist
+if getent group solanauser > /dev/null 2>&1; then
+    echo "Group 'solanauser' already exists."
+else
+    groupadd solanauser
+    echo "Group 'solanauser' created."
+fi
+
+# Create the user 'solanauser' and add to the group
+if id "solanauser" &>/dev/null; then
+    echo "User 'solanauser' already exists."
+else
+    useradd -m -g solanauser -s /bin/bash solanauser
+    echo "User 'solanauser' created and added to 'solanauser' group."
+fi
+
+# Set the user password
+echo "solanauser:$1" | chpasswd
+echo "Password for 'solanauser' set successfully."
+
+# Add the user to the sudo group
+usermod -aG sudo solanauser
+echo "'solanauser' has been added to the 'sudo' group and granted sudo privileges."
+
+# Create required directories in the user's home
+home_dir="/home/solanauser"
+declare -a dirs=("ledger" "accounts" "snapshots" "logs" "plugins")
+
+for dir in "${dirs[@]}"; do
+    mkdir -p "$home_dir/$dir"
+    chown solanauser:solanauser "$home_dir/$dir"
+    echo "Directory '$dir' created and ownership set to solanauser:solanauser."
+done

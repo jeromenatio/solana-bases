@@ -37,6 +37,7 @@ fi
 # List of file names to download
 declare -a files=(
     "tn-disk"
+    "tn-user"
 )
 
 # Ensure the binary directory exists
