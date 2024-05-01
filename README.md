@@ -1,8 +1,7 @@
 # SOLANA BASES
 
 Boilerplate files and scripts to install and configure a solana rpc node. \
-The script is for a `ubuntu` based linux distribution \
-For each following steps please replace `/path/to/file/install.sh` with the path of the output file on your system.
+The script is for a `ubuntu` based linux distribution
 
 ## INSTALLATION
 
