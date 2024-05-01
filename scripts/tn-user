@@ -44,6 +44,6 @@ declare -a dirs=("ledger" "accounts" "snapshots" "logs" "plugins")
 
 for dir in "${dirs[@]}"; do
     mkdir -p "$home_dir/$dir"
-    chown solanauser:solanauser "$home_dir/$dir"
+    chown -R solanauser:solanauser "$home_dir/$dir"
     echo "Directory '$dir' created and ownership set to solanauser:solanauser."
 done
