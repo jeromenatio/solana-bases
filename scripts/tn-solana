@@ -14,7 +14,7 @@ SOLANA_VERSION=$1
 YELLOWSTONE_VERSION=$2
 
 # Update and install necessary packages
-sudo apt update && sudo apt install -y curl build-essential libssl-dev pkg-config jq git
+sudo apt update && sudo apt install -y curl git libssl-dev libudev-dev pkg-config zlib1g-dev llvm clang make
 
 # Install Rust and Cargo using Rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
