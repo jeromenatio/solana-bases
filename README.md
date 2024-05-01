@@ -16,3 +16,15 @@ sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-
 ```bash
 sudo chmod +x /path/to/file/install.sh
 ```
+
+##### Execute and follow instructions
+```bash
+sudo /path/tofile/install.sh
+```
+
+##### All in a single command
+```bash
+sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh -O /path/to/file/install.sh \
+&& sudo chmod +x /path/to/file/install.sh \
+&& sudo /path/to/file/install.sh
+```
