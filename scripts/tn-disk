@@ -52,6 +52,10 @@ fi
 echo "Formatting the partition $PARTITION with ext4 filesystem..."
 mkfs.ext4 -F -O ^has_journal -E stride=2,stripe-width=512 "$PARTITION"
 
+# Remove any existing fstab entries for the same mount point
+echo "Removing existing fstab entries for the mount point $MOUNT_DIR..."
+sed -i "\|$MOUNT_DIR|d" /etc/fstab
+
 # Add fstab entry
 echo "Adding fstab entry for $PARTITION..."
 UUID=$(blkid -s UUID -o value "$PARTITION")
