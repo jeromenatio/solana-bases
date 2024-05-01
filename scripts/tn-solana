@@ -26,12 +26,10 @@ source $HOME/.cargo/env
 sh -c "$(curl -sSfL https://release.solana.com/$SOLANA_VERSION/install)"
 
 # Update PATH in .bashrc if not already added
-if ! grep -q 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' $HOME/.bashrc; then
-  echo 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' >> $HOME/.bashrc
-fi
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 
 # Reload .bashrc to update the path
-source $HOME/.bashrc
+source $HOME/.profile
 
 # Set Solana to use the Mainnet
 solana config set --url https://api.mainnet-beta.solana.com
