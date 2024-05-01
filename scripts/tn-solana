@@ -42,7 +42,7 @@ fi
 cd $HOME/plugins
 
 #Delete plugins if exists
-rm $HOME/plugins/yellowstone-grpc -R
+sudo rm $HOME/plugins/yellowstone-grpc -R
 
 # Clone the specific version of yellowstone-grpc
 git clone https://github.com/rpcpool/yellowstone-grpc.git
