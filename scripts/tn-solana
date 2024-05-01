@@ -3,8 +3,18 @@
 # Exit if any command fails
 set -e
 
+# Check if sufficient arguments are provided
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <solana_version> <yellowstone_version>"
+    exit 1
+fi
+
+# Capture command line arguments
+SOLANA_VERSION=$1
+YELLOWSTONE_VERSION=$2
+
 # Update and install necessary packages
-sudo apt update && sudo apt install -y curl build-essential libssl-dev pkg-config jq
+sudo apt update && sudo apt install -y curl build-essential libssl-dev pkg-config jq git
 
 # Install Rust and Cargo using Rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -12,11 +22,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # Activate Rust environment without restarting the session
 source $HOME/.cargo/env
 
-# Fetch the latest stable release of Solana using GitHub API
-LATEST_RELEASE=$(curl -s https://api.github.com/repos/solana-labs/solana/releases/latest | jq -r .tag_name)
-
-# Install Solana using the fetched version
-sh -c "$(curl -sSfL https://release.solana.com/$LATEST_RELEASE/install)"
+# Install Solana using the specified version
+sh -c "$(curl -sSfL https://release.solana.com/$SOLANA_VERSION/install)"
 
 # Update PATH in .bashrc if not already added
 if ! grep -q 'export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"' $HOME/.bashrc; then
@@ -29,10 +36,45 @@ source $HOME/.bashrc
 # Set Solana to use the Mainnet
 solana config set --url https://api.mainnet-beta.solana.com
 
-# Generate a new keypair for the account
-solana-keygen new --no-bip39-passphrase
+# Setup directory for plugins
+if [ ! -d "$HOME/plugins" ]; then
+  mkdir -p $HOME/plugins
+  sudo chown solanauser:solanauser $HOME/plugins
+fi
+cd $HOME/plugins
 
-# Verify installations and configuration
+# Clone the specific version of yellowstone-grpc
+git clone https://github.com/rpcpool/yellowstone-grpc.git
+cd yellowstone-grpc
+git checkout $YELLOWSTONE_VERSION
+
+# Build and install using Cargo
+cargo build --release
+
+# Replace the configuration file with optimized settings
+cat <<EOF >yellowstone-grpc-geyser/config.json
+{
+  "libpath": "../target/release/libyellowstone_grpc_geyser.so",
+  "log": {
+    "level": "info"
+  },
+  "grpc": {
+    "address": "0.0.0.0:10000",
+    "max_decoding_message_size": "4_194_304",
+    "snapshot_plugin_channel_capacity": "100_000_000",
+    "snapshot_client_channel_capacity": "100_000_000",
+    "channel_capacity": "1_000_000",
+    "unary_concurrency_limit": 500,
+    "unary_disabled": false
+  },
+  "prometheus": {
+    "address": "0.0.0.0:8999"
+  },
+  "block_fail_action": "log"
+}
+EOF
+
+# Verify installations
 echo "Rust version:"
 rustc --version
 
@@ -45,4 +87,4 @@ solana --version
 echo "Current Solana Configuration:"
 solana config get
 
-echo "Setup complete! You can now run Solana commands, and a new account has been created."
+echo "Setup complete! Solana and yellowstone-grpc are installed at $HOME/plugins."
