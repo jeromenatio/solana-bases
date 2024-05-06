@@ -40,7 +40,7 @@ echo "'solanauser' has been added to the 'sudo' group and granted sudo privilege
 
 # Create required directories in the user's home
 home_dir="/home/solanauser"
-declare -a dirs=("ledger" "accounts" "snapshots" "logs" "plugins")
+declare -a dirs=("ledger" "accounts" "snapshots" "logs" "plugins" "scripts")
 
 for dir in "${dirs[@]}"; do
     mkdir -p "$home_dir/$dir"

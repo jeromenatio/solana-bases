@@ -21,6 +21,11 @@ if [ ! -b "$DISK" ]; then
     exit 1
 fi
 
+# Ensure MOUNT_DIR starts with /home/solanauser/
+if [[ "$MOUNT_DIR" != /home/solanauser/* ]]; then
+    MOUNT_DIR="/home/solanauser/$MOUNT_DIR"
+fi
+
 # Create mount directory if it doesn't exist
 if [ ! -d "$MOUNT_DIR" ]; then
     echo "Mount directory $MOUNT_DIR does not exist. Creating it..."

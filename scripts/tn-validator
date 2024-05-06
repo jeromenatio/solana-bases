@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Configuration Variables
+RPC_PORT=8899
+ENTRYPOINT=mainnet-beta.solana.com:8001  # Use a different entrypoint if you need
+LEDGER_DIR=/path/to/your/solana/ledger
+ACCOUNTS_DIR=/path/to/your/solana/accounts
+LOG_FILE=/path/to/your/solana/logs/solana_rpc.log
+SNAPSHOT_INTERVAL_SLOTS=100  # Adjust based on your snapshot needs
+TRUSTED_VALIDATORS="validator1PubKey,validator2PubKey,validator3PubKey"  # List your trusted validators
+LOG_FILE="$HOME/logs/solana.log"
+
+# Launch the Solana Validator (acts as RPC)
+solana-validator \
+    --ledger $LEDGER_DIR \
+    --accounts $ACCOUNTS_DIR \
+    --entrypoint $ENTRYPOINT \
+    --rpc-port $RPC_PORT \
+    --dynamic-port-range 8000-8010 \
+    --limit-ledger-size \
+    --log $LOG_FILE \
+    --snapshot-interval-slots $SNAPSHOT_INTERVAL_SLOTS \
+    --enable-rpc-exit \
+    --enable-cpi-and-log-storage \
+    --no-untrusted-rpc \
+    --no-voting \
+    --private-rpc \
+    --gossip-port 8001 \
+    --trusted-validator $(echo $TRUSTED_VALIDATORS | tr ',' ' ')
+
+echo "Solana RPC node has started. Logs are being saved to $LOG_FILE."

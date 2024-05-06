@@ -30,8 +30,5 @@ sudo /tn-scripts/tn-install.sh
 
 ##### All in a single command
 ```bash
-sudo mkdir /tn-scripts \
-&& sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh -O /tn-scripts/tn-install.sh \
-&& sudo chmod +x /tn-scripts/tn-install.sh \
-&& sudo /tn-scripts/tn-install.sh
+sudo mkdir /tn-scripts && sudo wget -q https://raw.githubusercontent.com/jeromenatio/solana-bases/main/tn-install.sh -O /tn-scripts/tn-install.sh && sudo chmod +x /tn-scripts/tn-install.sh && sudo /tn-scripts/tn-install.sh
 ```
