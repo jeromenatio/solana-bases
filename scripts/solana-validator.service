@@ -7,8 +7,8 @@ User=solanauser
 Type=simple
 ExecStart=/home/solanauser/scripts/solana-validator.sh
 Restart=no
-Restart=on-failure
-RestartSec=10
+#Restart=on-failure
+#RestartSec=10
 LimitNOFILE=1048576
 
 [Install]
