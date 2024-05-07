@@ -40,10 +40,10 @@ declare -a files=(
     "tn-disk"
     "tn-perf"
     "tn-solana"
-    "tn-start",
-    "tn-stop",
-    "tn-log",
-    "tn-status",
+    "tn-start"
+    "tn-stop"
+    "tn-log"
+    "tn-status"
     "tn-catch"
 )
 
