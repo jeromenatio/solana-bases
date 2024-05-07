@@ -1,1 +1,2 @@
 #!/bin/bash
+solana catchup /home/solanauser/.config/solana/id.json --our-localhost
