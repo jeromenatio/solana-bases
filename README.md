@@ -1,7 +1,5 @@
 # SOLANA BASES
 
-## INSTRUCTIONS
-
 Boilerplate files and scripts to install and configure a solana rpc node. \
 The script is for a `ubuntu` based linux distribution.\
 Order of installation, first as root, `tn-user`, `tn-disk`, `tn-perf` then `reboot`. \
