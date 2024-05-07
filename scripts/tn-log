@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Default number of lines
+default_lines=50
+
+# Check if the first parameter is provided
+if [[ -n "$1" ]]; then
+    lines=$1
+else
+    lines=$default_lines
+fi
+
+# Use tail to display the last 'lines' lines of the log file
+tail -n $lines /home/solanauser/logs/solana-validator.log

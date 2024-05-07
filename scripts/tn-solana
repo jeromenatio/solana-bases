@@ -76,6 +76,41 @@ cat <<EOF >yellowstone-grpc-geyser/config.json
 }
 EOF
 
+# Create solana accounts
+echo "Creating solana identity keypair"
+solana-keygen new
+
+# Download service and validator script
+BASE_URL="https://raw.githubusercontent.com/jeromenatio/solana-bases/main/scripts"
+SCRIPTS_DIR="/home/solanauser/scripts"
+SERVICE_DIR="/etc/systemd/system"
+
+# Create scripts directory if it does not exist and set ownership
+if [ ! -d "$SCRIPTS_DIR" ]; then
+    echo "Creating scripts directory..."
+    mkdir -p "$SCRIPTS_DIR"
+    sudo chown solanauser:solanauser "$SCRIPTS_DIR"
+    echo "Scripts directory created and ownership set to solanauser:solanauser."
+fi
+
+# Downloading files
+echo "Downloading Solana validator script..."
+sudo wget -q -O "$SCRIPTS_DIR/solana-validator.sh" "$BASE_URL/solana-validator.sh" || { echo "Failed to download script"; exit 1; }
+
+echo "Downloading Solana validator service file..."
+sudo wget -q -O "$SERVICE_DIR/solana-validator.service" "$BASE_URL/solana-validator.service" || { echo "Failed to download service file"; exit 1; }
+
+# Setting executable permissions on script
+echo "Setting executable permissions on script..."
+sudo chmod +x "$SCRIPTS_DIR/solana-validator.sh"
+
+# Setting ownership and permissions on service file
+echo "Setting ownership and permissions on service file..."
+sudo chown root:root "$SERVICE_DIR/solana-validator.service"
+sudo chmod 644 "$SERVICE_DIR/solana-validator.service"
+sudo systemctl daemon-reload
+sudo systemctl enable solana-validator.service
+
 # Verify installations
 echo "Rust version:"
 rustc --version

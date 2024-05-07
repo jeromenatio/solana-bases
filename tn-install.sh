@@ -40,7 +40,11 @@ declare -a files=(
     "tn-disk"
     "tn-perf"
     "tn-solana"
-    "tn-validator"
+    "tn-start",
+    "tn-stop",
+    "tn-log",
+    "tn-status",
+    "tn-catch"
 )
 
 # Ensure the binary directory exists
