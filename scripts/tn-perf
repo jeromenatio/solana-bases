@@ -40,13 +40,13 @@ ensure_pam_module() {
 
 # Sysctl settings
 update_config "fs.file-max" "2000000" "/etc/sysctl.conf"
-update_config "vm.swappiness" "1" "/etc/sysctl.conf"
-update_config "vm.dirty_ratio" "70" "/etc/sysctl.conf"
-update_config "vm.dirty_background_ratio" "30" "/etc/sysctl.conf"
-update_config "vm.vfs_cache_pressure" "20" "/etc/sysctl.conf"
+update_config "vm.swappiness" "10" "/etc/sysctl.conf"
+update_config "vm.dirty_ratio" "40" "/etc/sysctl.conf"
+update_config "vm.dirty_background_ratio" "10" "/etc/sysctl.conf"
+update_config "vm.vfs_cache_pressure" "50" "/etc/sysctl.conf"
 update_config "vm.max_map_count" "1000000" "/etc/sysctl.conf"
-update_config "net.core.somaxconn" "10000" "/etc/sysctl.conf"
-update_config "net.core.netdev_max_backlog" "10000" "/etc/sysctl.conf"
+update_config "net.core.somaxconn" "4096" "/etc/sysctl.conf"
+update_config "net.core.netdev_max_backlog" "50000" "/etc/sysctl.conf"
 update_config "net.core.rmem_default" "134217728" "/etc/sysctl.conf"
 update_config "net.core.wmem_default" "134217728" "/etc/sysctl.conf"
 update_config "net.core.rmem_max" "134217728" "/etc/sysctl.conf"
@@ -61,8 +61,8 @@ update_config "net.ipv4.tcp_tw_reuse" "1" "/etc/sysctl.conf"
 # Security limits settings
 update_config "* soft nofile" "2000000" "/etc/security/limits.conf"
 update_config "* hard nofile" "2000000" "/etc/security/limits.conf"
-update_config "* soft nproc" "30000" "/etc/security/limits.conf"
-update_config "* hard nproc" "30000" "/etc/security/limits.conf"
+update_config "* soft nproc" "65535" "/etc/security/limits.conf"
+update_config "* hard nproc" "65535" "/etc/security/limits.conf"
 
 # Update PAM configuration to apply limits
 ensure_pam_module "/etc/pam.d/common-session"
