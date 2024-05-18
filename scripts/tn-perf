@@ -38,31 +38,35 @@ ensure_pam_module() {
     fi
 }
 
-# Sysctl settings
+# Sysctl settings (sure)
 update_config "fs.file-max" "2000000" "/etc/sysctl.conf"
-update_config "vm.swappiness" "5" "/etc/sysctl.conf"
-update_config "vm.dirty_ratio" "70" "/etc/sysctl.conf"
-update_config "vm.dirty_background_ratio" "30" "/etc/sysctl.conf"
-update_config "vm.vfs_cache_pressure" "20" "/etc/sysctl.conf"
 update_config "vm.max_map_count" "1000000" "/etc/sysctl.conf"
-update_config "net.core.somaxconn" "4096" "/etc/sysctl.conf"
 update_config "net.core.netdev_max_backlog" "50000" "/etc/sysctl.conf"
 update_config "net.core.rmem_default" "134217728" "/etc/sysctl.conf"
 update_config "net.core.wmem_default" "134217728" "/etc/sysctl.conf"
 update_config "net.core.rmem_max" "134217728" "/etc/sysctl.conf"
 update_config "net.core.wmem_max" "134217728" "/etc/sysctl.conf"
-update_config "net.core.optmem_max" "0" "/etc/sysctl.conf"
-update_config "net.ipv4.tcp_rmem" "4096 12582912 134217728" "/etc/sysctl.conf"
-update_config "net.ipv4.tcp_wmem" "4096 12582912 134217728" "/etc/sysctl.conf"
-update_config "net.ipv4.tcp_max_syn_backlog" "8096" "/etc/sysctl.conf"
-update_config "net.ipv4.tcp_slow_start_after_idle" "0" "/etc/sysctl.conf"
-update_config "net.ipv4.tcp_tw_reuse" "1" "/etc/sysctl.conf"
+update_config "net.core.optmem_max" "20480" "/etc/sysctl.conf"
 
-# Security limits settings
+# Sysctl settings (TO TEST)
+#update_config "net.core.somaxconn" "4096" "/etc/sysctl.conf"
+#update_config "vm.swappiness" "5" "/etc/sysctl.conf"
+#update_config "vm.dirty_ratio" "70" "/etc/sysctl.conf"
+#update_config "vm.dirty_background_ratio" "30" "/etc/sysctl.conf"
+#update_config "vm.vfs_cache_pressure" "20" "/etc/sysctl.conf"
+#update_config "net.ipv4.tcp_rmem" "4096 12582912 134217728" "/etc/sysctl.conf"
+#update_config "net.ipv4.tcp_wmem" "4096 12582912 134217728" "/etc/sysctl.conf"
+#update_config "net.ipv4.tcp_max_syn_backlog" "8096" "/etc/sysctl.conf"
+#update_config "net.ipv4.tcp_slow_start_after_idle" "0" "/etc/sysctl.conf"
+#update_config "net.ipv4.tcp_tw_reuse" "1" "/etc/sysctl.conf"
+
+# Security limits settings (sure)
 update_config "* soft nofile" "2000000" "/etc/security/limits.conf"
 update_config "* hard nofile" "2000000" "/etc/security/limits.conf"
-update_config "* soft nproc" "1000000" "/etc/security/limits.conf"
-update_config "* hard nproc" "1000000" "/etc/security/limits.conf"
+
+# Security limits settings (To TEST)
+#update_config "* soft nproc" "1000000" "/etc/security/limits.conf"
+#update_config "* hard nproc" "1000000" "/etc/security/limits.conf"
 
 # Update PAM configuration to apply limits
 ensure_pam_module "/etc/pam.d/common-session"
