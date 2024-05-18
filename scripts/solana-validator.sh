@@ -12,8 +12,6 @@ exec solana-validator \
 --private-rpc \
 --rpc-port 8899 \
 --rpc-threads 10 \
---enable-rpc-transaction-history \
---account-index program-id \
 --geyser-plugin-config /home/solanauser/plugins/yellowstone-grpc/yellowstone-grpc-geyser/config.json \
 --use-snapshot-archives-at-startup always \
 --entrypoint entrypoint.mainnet-beta.solana.com:8001 \
@@ -30,6 +28,8 @@ exec solana-validator \
 #--known-validator GcJxg78aTQGeErjv2b4kcd1NVRYuB31rfhuJ2zXgrPac \
 #--known-validator 2nhGaJvR17TeytzJVajPfABHQcAwinKoCG8F69gRdQot \
 #--known-validator 9Hzxq2BnACf7AJbLUBpuyRgtZtuJwFvNYAeah1x6iYcS
+#--enable-rpc-transaction-history \
+#--account-index program-id \
 
 #--use-snapshot-archives-at-startup always => #always, never when-newest
 #--account-index program-id => program-id spl-token-owner spl-token-mint
