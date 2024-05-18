@@ -42,7 +42,13 @@ fi
 cd $HOME/plugins
 
 #Delete plugins if exists
-sudo rm $HOME/plugins/yellowstone-grpc -R
+DIRECTORY_TO_DEL="$HOME/plugins/yellowstone-grpc"
+if [ -d "$DIRECTORY_TO_DEL" ]; then
+    sudo rm -R "$DIRECTORY_TO_DEL"
+    echo "Directory $DIRECTORY_TO_DEL has been deleted."
+else
+    echo "Directory $DIRECTORY_TO_DEL does not exist."
+fi
 
 # Clone the specific version of yellowstone-grpc
 git clone https://github.com/rpcpool/yellowstone-grpc.git
